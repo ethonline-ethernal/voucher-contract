@@ -12,3 +12,9 @@ deploy:
 
 deploy-ropsten:
 	npx hardhat run scripts/deploy.ts --network ropsten
+
+deploy-mumbai:
+	npx hardhat run scripts/deploy.ts --network mumbai
+
+deploy-polygon:
+	npx hardhat run scripts/deploy.ts --network polygon

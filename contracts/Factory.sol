@@ -16,9 +16,9 @@ contract Factory {
     Counters.Counter private collectionIds;
     Voucher public _voucher;
 
-    function createVoucher(string memory _collectionName , string memory _baseURI , uint256 _maxSupply) public{
+    function createVoucher(string memory _collectionName ,string memory _collectionSymbol, string memory _baseURI , uint256 _maxSupply) public{
         require(voucherAddress[_collectionName] == address(0), "Collection name can not be duplicated");
-        Voucher voucher = new Voucher(_collectionName, _baseURI , _maxSupply);
+        Voucher voucher = new Voucher(_collectionName,_collectionSymbol, _baseURI , _maxSupply);
         voucher.giveAccessToVault(msg.sender);
         voucher.giveAccessToVault(vault);
         voucher.transferOwnership(msg.sender);

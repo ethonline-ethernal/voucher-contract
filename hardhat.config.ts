@@ -1,10 +1,18 @@
-import { HardhatUserConfig } from "hardhat/config";
-import "dotenv/config";
-import "@nomicfoundation/hardhat-toolbox";
-import "@nomiclabs/hardhat-etherscan";
+import { HardhatUserConfig } from 'hardhat/config'
+import 'dotenv/config'
+import '@nomicfoundation/hardhat-toolbox'
+import '@nomiclabs/hardhat-etherscan'
 
 // Template
-const { ROPSTEN_RPC, PRIVATE_KEY, ETHERSCAN_API, RINKEBY_RPC , POLYGON_RPC, MUMBAI_RPC} = process.env;
+const {
+  ROPSTEN_RPC,
+  PRIVATE_KEY,
+  ETHERSCAN_API,
+  RINKEBY_RPC,
+  POLYGON_RPC,
+  MUMBAI_RPC,
+  POLYSCAN_API,
+} = process.env
 
 const config: HardhatUserConfig = {
   networks: {
@@ -23,15 +31,25 @@ const config: HardhatUserConfig = {
     mumbai: {
       url: MUMBAI_RPC,
       accounts: [PRIVATE_KEY as string],
-    }
+    },
   },
   etherscan: {
-    apiKey: ETHERSCAN_API,
+    apiKey: {
+      //ethereum
+      mainnet: ETHERSCAN_API as string,
+      ropsten: ETHERSCAN_API as string,
+      rinkeby: ETHERSCAN_API as string,
+      goerli: ETHERSCAN_API as string,
+      kovan: ETHERSCAN_API as string,
+      //polygon
+      polygon: POLYSCAN_API as string,
+      polygonMumbai: POLYSCAN_API as string,
+    },
   },
   solidity: {
     compilers: [
       {
-        version: "0.8.15",
+        version: '0.8.15',
         settings: {
           optimizer: {
             enabled: true,
@@ -41,6 +59,6 @@ const config: HardhatUserConfig = {
       },
     ],
   },
-};
+}
 
-export default config;
+export default config
