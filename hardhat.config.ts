@@ -4,7 +4,7 @@ import "@nomicfoundation/hardhat-toolbox";
 import "@nomiclabs/hardhat-etherscan";
 
 // Template
-const { ROPSTEN_RPC, PRIVATE_KEY, ETHERSCAN_API, RINKEBY_RPC } = process.env;
+const { ROPSTEN_RPC, PRIVATE_KEY, ETHERSCAN_API, RINKEBY_RPC , POLYGON_RPC, MUMBAI_RPC} = process.env;
 
 const config: HardhatUserConfig = {
   networks: {
@@ -16,6 +16,14 @@ const config: HardhatUserConfig = {
       url: RINKEBY_RPC,
       accounts: [PRIVATE_KEY as string],
     },
+    polygon: {
+      url: POLYGON_RPC,
+      accounts: [PRIVATE_KEY as string],
+    },
+    mumbai: {
+      url: MUMBAI_RPC,
+      accounts: [PRIVATE_KEY as string],
+    }
   },
   etherscan: {
     apiKey: ETHERSCAN_API,
