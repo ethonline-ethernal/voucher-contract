@@ -5,43 +5,54 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-contract Voucher is ERC1155  , Ownable , AccessControl {
+contract TokenGatedVoucher is ERC1155 , Ownable , AccessControl {
     uint256 constant voucher = 1;
     uint256 constant usedVoucher = 2;
     uint256 public quantity;
     string public name;
     string public symbol;
     string internal baseURI;
-    mapping (address => bool) public mintedAddress;
+    mapping (uint256 => bool) public mintedTokenID;
+    address public tokenGated;
     bytes32 public constant VAULT = keccak256("VAULT");
     event GrantAccess(address indexed account);
 
-    constructor(string memory _name ,string memory _symbol , string memory _baseURI , uint256 _quantity) 
+    constructor(string memory _name ,string memory _symbol , string memory _baseURI , uint256 _quantity , address _tokenGated) 
     ERC1155(_baseURI) {
         name = _name;
         symbol = _symbol;
         baseURI = _baseURI;
         quantity = _quantity;
+        tokenGated = _tokenGated;
     }
 
-    function mint(address _to) public{
-        require(!isMint(_to), "This address is already mint voucher");
+    function mint(address _to , uint256 _tokenID) public {
+        require(isNFTOwner(_tokenID , _to), "This address is not the owner of the TokenGated NFT");
+        require(!isMint(_tokenID), "This NFT tokenID is already mint voucher");
         _mint(_to,voucher, 1, "Ethernal Voucher");
-        mintedAddress[_to] = true;
+        mintedTokenID[_tokenID] = true;
     }
 
-    function redeem (address _customer) public onlyRole(VAULT) {
-        require(isMint(_customer), "This address is not minted");
+    function redeem (address _customer, uint256 _tokenID) public onlyRole(VAULT) {
+        require(isMint(_tokenID), "This NFT tokenID is not mint voucher");
         _burn(_customer,voucher, 1);
         _mint(_customer,usedVoucher, 1, "Used Voucher");
     }
 
-    function isMint(address _to) public view returns (bool) {
-        if (mintedAddress[_to] == true) {
+    function isMint(uint256 _tokenID) public view returns (bool) {
+        if (mintedTokenID[_tokenID] == true) {
             return true;
         }
         return false;
+    }
+
+    function isNFTOwner(
+        uint256 _tokenId ,
+        address _account
+    ) public view returns (bool) {
+        return _account == IERC721(tokenGated).ownerOf(_tokenId);
     }
 
     function uri(uint256 _id) public view override returns (string memory) {
