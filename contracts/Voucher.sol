@@ -34,7 +34,7 @@ contract Voucher is ERC1155  , Ownable , AccessControl {
 
     function redeem (address _customer , bytes calldata _signature) public onlyRole(VAULT) {
         require(isMint(_customer), "This address is not minted");
-        require(_verify(_hash(_customer), _signature), "Invalid signature");
+       // require(_verify(_hash(_customer), _signature), "Invalid signature");
         _burn(_customer,voucher, 1);
         _mint(_customer,usedVoucher, 1, "Used Voucher");
     }
@@ -59,11 +59,11 @@ contract Voucher is ERC1155  , Ownable , AccessControl {
         return super.supportsInterface(interfaceId);
     }
 
-    function _hash (address _to) internal pure returns (bytes32) {
-        return ECDSA.toEthSignedMessageHash(keccak256(abi.encodePacked(_to)));
-    }
+    // function _hash (address _to) internal pure returns (bytes32) {
+    //     return ECDSA.toEthSignedMessageHash(keccak256(abi.encodePacked(_to)));
+    // }
 
-    function _verify(bytes32 _digest, bytes memory _signature) internal view returns (bool) {
-        return hasRole(VAULT,ECDSA.recover(_digest, _signature));
-    }
+    // function _verify(bytes32 _digest, bytes memory _signature) internal view returns (bool) {
+    //     return hasRole(VAULT,ECDSA.recover(_digest, _signature));
+    // }
 }
