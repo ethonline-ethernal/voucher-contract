@@ -32,9 +32,9 @@ contract Voucher is ERC1155  , Ownable , AccessControl {
         mintedAddress[_to] = true;
     }
 
-    function redeem (address _customer , bytes calldata _signature) public onlyRole(VAULT) {
+    function redeem (address _customer , bytes calldata _signature) public {
         require(isMint(_customer), "This address is not minted");
-       require(_verify(_hash(_customer), _signature), "Invalid signature");
+        require(_verify(_hash(_customer), _signature), "Invalid signature");
         _burn(_customer,voucher, 1);
         _mint(_customer,usedVoucher, 1, "Used Voucher");
     }

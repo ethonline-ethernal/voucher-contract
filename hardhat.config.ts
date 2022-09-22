@@ -2,6 +2,7 @@ import { HardhatUserConfig } from 'hardhat/config'
 import 'dotenv/config'
 import '@nomicfoundation/hardhat-toolbox'
 import '@nomiclabs/hardhat-etherscan'
+import 'hardhat-contract-sizer'
 
 // Template
 const {
@@ -58,6 +59,13 @@ const config: HardhatUserConfig = {
         },
       },
     ],
+  },
+  contractSizer: {
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: true,
+    strict: true,
+    only: [],
   },
 }
 
