@@ -11,8 +11,13 @@ contract Factory {
     mapping (string => address) public voucherAddress;
     mapping (uint256 => string) public voucherName;
     event VoucherCreated(address indexed voucherAddress, string name);
+    event TokenGatedCreated(address indexed voucherAddress, string name , address indexed tokenGatedAddress);
     using Counters for Counters.Counter;
-    address constant private vault = 0xCfc597a8793E0ca94FC8310482D9e11367cfCA24;
+    address private vault;
+
+    constructor(address _vault) {
+        vault = _vault;
+    }
 
     Counters.Counter private collectionIds;
     Voucher public _voucher;
@@ -40,7 +45,7 @@ contract Factory {
         uint256 collectionId = collectionIds.current();
         voucherName[collectionId] = _collectionName;
         voucherAddress[_collectionName] = address(voucher);
-        emit VoucherCreated(address(voucher), _collectionName);
+        emit TokenGatedCreated(address(voucher), _collectionName, _tokenGatedAddress);
     }
 
     function getVoucherAddress(string memory _collectionName) public view returns (address) {

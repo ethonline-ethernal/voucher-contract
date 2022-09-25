@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract Voucher is ERC1155  , Ownable , AccessControl {
     uint256 constant voucher = 1;
@@ -32,9 +31,8 @@ contract Voucher is ERC1155  , Ownable , AccessControl {
         mintedAddress[_to] = true;
     }
 
-    function redeem (address _customer , bytes calldata _signature) public onlyRole(VAULT) {
+    function redeem (address _customer) public onlyRole(VAULT) {
         require(isMint(_customer), "This address is not minted");
-       // require(_verify(_hash(_customer), _signature), "Invalid signature");
         _burn(_customer,voucher, 1);
         _mint(_customer,usedVoucher, 1, "Used Voucher");
     }
@@ -58,12 +56,4 @@ contract Voucher is ERC1155  , Ownable , AccessControl {
      function supportsInterface(bytes4 interfaceId) public view virtual override(ERC1155, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
-
-    // function _hash (address _to) internal pure returns (bytes32) {
-    //     return ECDSA.toEthSignedMessageHash(keccak256(abi.encodePacked(_to)));
-    // }
-
-    // function _verify(bytes32 _digest, bytes memory _signature) internal view returns (bool) {
-    //     return hasRole(VAULT,ECDSA.recover(_digest, _signature));
-    // }
 }

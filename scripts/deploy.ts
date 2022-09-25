@@ -9,42 +9,44 @@ async function main() {
 
   const tokenGatedAddress = '0x2F341737d7D9A126EC86a9d5168a34Fd06Bbd156'
 
+  const vault = '0xCfc597a8793E0ca94FC8310482D9e11367cfCA24'
+
   // --- Deploy Factory ---
 
-  const Factory = await hre.ethers.getContractFactory('Factory')
-  const factory = await Factory.deploy()
-  await factory.deployed()
-  console.log('Factory deployed to:', factory.address)
-  await factory.createVoucher('Alice', 'BOB', URI, 50)
-  await factory.createTokenGatedVoucher(
-    'CAROL',
-    'DAVE',
-    URI,
-    50,
-    tokenGatedAddress,
-  )
+  // const Factory = await hre.ethers.getContractFactory('Factory')
+  // const factory = await Factory.deploy(vault)
+  // await factory.deployed()
+  // console.log('Factory deployed to:', factory.address)
+  // await factory.createVoucher('Alice', 'BOB', URI, 50)
+  // await factory.createTokenGatedVoucher(
+  //   'CAROL',
+  //   'DAVE',
+  //   URI,
+  //   50,
+  //   tokenGatedAddress,
+  // )
 
   await new Promise((resolve) => setTimeout(resolve, 10000))
 
-  const Voucher = await hre.ethers.getContractFactory('Voucher')
-  const voucher = await Voucher.attach(await factory.getVoucherAddress('Alice'))
-  await voucher.mint('0xCfc597a8793E0ca94FC8310482D9e11367cfCA24')
+  // const Voucher = await hre.ethers.getContractFactory('Voucher')
+  // const voucher = await Voucher.attach(await factory.getVoucherAddress('Alice'))
+  // await voucher.mint('0xCfc597a8793E0ca94FC8310482D9e11367cfCA24')
 
-  const TokenGatedVoucher = await hre.ethers.getContractFactory(
-    'TokenGatedVoucher',
-  )
-  const tokenGatedVoucher = await TokenGatedVoucher.attach(
-    await factory.getVoucherAddress('CAROL'),
-  )
-  await tokenGatedVoucher.mint('0xCfc597a8793E0ca94FC8310482D9e11367cfCA24', 1)
+  // const TokenGatedVoucher = await hre.ethers.getContractFactory(
+  //   'TokenGatedVoucher',
+  // )
+  // const tokenGatedVoucher = await TokenGatedVoucher.attach(
+  //   await factory.getVoucherAddress('CAROL'),
+  // )
+  // await tokenGatedVoucher.mint('0xCfc597a8793E0ca94FC8310482D9e11367cfCA24', 1)
 
-  await new Promise((resolve) => setTimeout(resolve, 10000))
+  // await new Promise((resolve) => setTimeout(resolve, 10000))
 
-  await voucher.redeem('0xCfc597a8793E0ca94FC8310482D9e11367cfCA24')
-  await tokenGatedVoucher.redeem(
-    '0xCfc597a8793E0ca94FC8310482D9e11367cfCA24',
-    1,
-  )
+  // await voucher.redeem('0xCfc597a8793E0ca94FC8310482D9e11367cfCA24')
+  // await tokenGatedVoucher.redeem(
+  //   '0xCfc597a8793E0ca94FC8310482D9e11367cfCA24',
+  //   1,
+  // )
 
   // ----------------------------- Token Gated -----------------------------
 
@@ -85,8 +87,8 @@ async function main() {
   // ----------------------------- Verify --------------------------------
 
   await hre.run('verify:verify', {
-    address: factory.address,
-    constructorArguments: [],
+    address: '0xA2Ad8CCA97d01806Cd8cc8f8B3a8e3A8c4AD47fD',
+    constructorArguments: [vault],
   })
 
   // await hre.run('verify:verify', {
