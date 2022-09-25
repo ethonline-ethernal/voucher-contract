@@ -26,7 +26,7 @@ async function main() {
   //   tokenGatedAddress,
   // )
 
-  await new Promise((resolve) => setTimeout(resolve, 10000))
+  // await new Promise((resolve) => setTimeout(resolve, 10000))
 
   // const Voucher = await hre.ethers.getContractFactory('Voucher')
   // const voucher = await Voucher.attach(await factory.getVoucherAddress('Alice'))
@@ -86,20 +86,20 @@ async function main() {
 
   // ----------------------------- Verify --------------------------------
 
-  await hre.run('verify:verify', {
-    address: '0xA2Ad8CCA97d01806Cd8cc8f8B3a8e3A8c4AD47fD',
-    constructorArguments: [vault],
-  })
+  // await hre.run('verify:verify', {
+  //   address: '0xc27B990420CBa3528F0032c72C08502097e338f5',
+  //   constructorArguments: [vault],
+  // })
 
   // await hre.run('verify:verify', {
   //   address: voucher.address,
   //   constructorArguments: ['Ethernal Voucher', 'ETHERNAL', URI, 50],
   // })
 
-  // await hre.run('verify:verify', {
-  //   address: tokengatedvoucher.address,
-  //   constructorArguments: ['Alice', 'BOB', URI, 50, tokenGatedAddress],
-  // })
+  await hre.run('verify:verify', {
+    address: '0x0683e1175026045aC4ca55270E7da9896E86A4bc',
+    constructorArguments: ['Alice', 'BOB', URI, 50, tokenGatedAddress],
+  })
 }
 main().catch((error) => {
   console.error(error)
