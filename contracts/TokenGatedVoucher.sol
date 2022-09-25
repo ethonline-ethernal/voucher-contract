@@ -29,7 +29,7 @@ contract TokenGatedVoucher is ERC1155 , Ownable , AccessControl {
     }
 
     function mint(address _to , uint256 _tokenID) public {
-        require(isNFTOwner(_tokenID , _to), "This address is not the owner of the TokenGated NFT");
+       // require(isNFTOwner(_tokenID , _to), "This address is not the owner of the TokenGated NFT");
         require(!isMint(_tokenID), "This NFT tokenID is already mint voucher");
         _mint(_to,voucher, 1, "Ethernal Voucher");
         mintedTokenID[_tokenID] = true;
